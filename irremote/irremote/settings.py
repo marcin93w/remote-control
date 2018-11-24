@@ -25,7 +25,7 @@ SECRET_KEY = '86j848on$&lxid8susz@l=_(m=q-wgu_zafq7ua-#%wx25r9r$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.0.213', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -54,7 +54,7 @@ ROOT_URLCONF = 'irremote.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'irremoteapp/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
