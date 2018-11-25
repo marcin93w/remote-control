@@ -1,9 +1,6 @@
 <html>
 <head>
-        <!-- <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css"> -->
-        <!-- <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css"> -->
-        <!-- <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css" -->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <title>Poligon remote control</title>
     <style>
     body {
@@ -13,9 +10,13 @@
         background-color: black;
     }
     .left {
-        grid-column: 1;}
+        grid-column: 1;
+    }
     .right {
         grid-column: 2;
+    }
+    .center {
+        grid-column: 1/3;
     }
     .btn {
         height: 120px;
@@ -23,7 +24,7 @@
         background-color: #15d32b;
     }
     .fas{
-        font-size: 3em
+        font-size: 3em;
     }
     .icon{
         margin-left: 5px;
@@ -32,15 +33,20 @@
     </style>
 </head> 
 <body>
-    <button class="left btn" onclick="fetch('/send?device=radio&button=power')">
-        <i class="fas icon fa-power-off"></i>           <i class="fas icon fa-music"></i>
+    <button class="left btn fas" onclick="fetch('/send?device=radio&button=power')">
+        <i class="icon fa-music"></i> ON
     </button>
-    <button class="right btn" onclick="fetch('/send?device=tv&button=power')">
-        <i class="fas icon fa-power-off"></i>           <i class="fas icon   fa-tv"></i>
+    <button class="right btn" onclick="fetch('/send?device=radio&button=aux')">
+        </i><i class="fas icon fa-music"></i><i class="fas fa-bell-slash"></i>
+    </button>
+    <button class="btn center" onclick="fetch('/send?device=tv&button=power')">
+        <i class="fas icon fa-power-off"></i><i class="fas icon   fa-tv"></i>
     </button>
     <button class="left btn btn-primary" onclick="fetch('/send?device=radio&button=vol-down')">
-        <i class="fas fa-volume-down"></i></button>
+        <i class="fas fa-volume-down"></i>
+    </button>
     <button class="right btn"  onclick="fetch('/send?device=radio&button=vol-up')">
-        <i class="fas fa-volume-up"></i></button>
+        <i class="fas fa-volume-up"></i>
+    </button>
 </body>
 </html>
