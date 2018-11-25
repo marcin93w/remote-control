@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'pwa'
 ]
 
 MIDDLEWARE = [
@@ -118,3 +119,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'), # if your static files folder is named "staticfiles"
+)
+
+PWA_APP_NAME = 'Poligon Smart Home'
+PWA_APP_DESCRIPTION = "Poligon Smart Home Volume Control"
+PWA_APP_THEME_COLOR = '#0A0302'
+PWA_APP_BACKGROUND_COLOR = '#ffffff'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_START_URL = '/'
+PWA_APP_ICONS = [
+    {
+        'src': '/static/logo.png',
+        'sizes': '160x160'
+    }
+]
