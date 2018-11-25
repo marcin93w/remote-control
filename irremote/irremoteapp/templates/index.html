@@ -2,6 +2,7 @@
 <head>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <title>Poligon remote control</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
     <style>
     body {
         display: grid;
@@ -33,8 +34,8 @@
     </style>
 </head> 
 <body>
-    <button class="left btn fas" onclick="fetch('/send?device=radio&button=aux')">
-        <i class="icon fa-music"></i> ON
+    <button class="left btn" onclick="fetch('/send?device=radio&button=aux')">
+        <i class="fas icon fa-music"></i><i class="fas fa-bell"></i>
     </button>
     <button class="right btn" onclick="fetch('/send?device=radio&button=power')">
         </i><i class="fas icon fa-music"></i><i class="fas fa-bell-slash"></i>
