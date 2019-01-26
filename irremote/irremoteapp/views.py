@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from py_irsend import irsend
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+import json
 
 def index(request):
     return render(request, 'index.html')
@@ -14,8 +15,9 @@ def send(request):
 @csrf_exempt
 def dialogflow(request):
     if request.body:
-        if request.body.queryResult:
-            intent = request.body.queryResult.intent.displayName 
+        data = json.loads(request.body.decode("utf-8"))
+        if 'queryResult' in data:
+            intent = data['queryResult']['intent']['displayName'] 
             if intent == 'radio-on':
                 irsend.send_once('radio', ['aux'])
             elif intent == 'radio-off':
@@ -30,8 +32,8 @@ def dialogflow(request):
             return JsonResponse({
                 "fulfillment_text": "ok"
             })
-    else:
-        return JsonResponse({
+    
+    return JsonResponse({
         "fulfillment_text": "unknown command"
     })
 
