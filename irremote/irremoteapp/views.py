@@ -14,12 +14,12 @@ def send(request):
 
 def audioswitch(request):
     source = request.GET['source']
-    GPIO.output(23, source == 1 ? GPIO.LOW : GPIO.HIGH)
-    GPIO.output(24, source == 1 ? GPIO.LOW : GPIO.HIGH)
-    GPIO.output(25, source == 2 ? GPIO.LOW : GPIO.HIGH)
-    GPIO.output(27, source == 2 ? GPIO.LOW : GPIO.HIGH)
-    GPIO.output(28, source == 3 ? GPIO.LOW : GPIO.HIGH)
-    GPIO.output(29, source == 3 ? GPIO.LOW : GPIO.HIGH)
+    GPIO.output(23, GPIO.LOW if source == 1 else GPIO.HIGH)
+    GPIO.output(24, GPIO.LOW if source == 1 else GPIO.HIGH)
+    GPIO.output(25, GPIO.LOW if source == 2 else GPIO.HIGH)
+    GPIO.output(27, GPIO.LOW if source == 2 else GPIO.HIGH)
+    GPIO.output(28, GPIO.LOW if source == 3 else GPIO.HIGH)
+    GPIO.output(29, GPIO.LOW if source == 3 else GPIO.HIGH)
 
 @csrf_exempt
 def dialogflow(request):
