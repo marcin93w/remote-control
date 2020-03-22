@@ -12,6 +12,15 @@ def send(request):
     irsend.send_once(request.GET['device'], [request.GET['button']])
     return HttpResponse('ok')
 
+def audioswitch(request):
+    source = request.GET['source']
+    GPIO.output(23, source == 1 ? GPIO.LOW : GPIO.HIGH)
+    GPIO.output(24, source == 1 ? GPIO.LOW : GPIO.HIGH)
+    GPIO.output(25, source == 2 ? GPIO.LOW : GPIO.HIGH)
+    GPIO.output(27, source == 2 ? GPIO.LOW : GPIO.HIGH)
+    GPIO.output(28, source == 3 ? GPIO.LOW : GPIO.HIGH)
+    GPIO.output(29, source == 3 ? GPIO.LOW : GPIO.HIGH)
+
 @csrf_exempt
 def dialogflow(request):
     if request.body:
