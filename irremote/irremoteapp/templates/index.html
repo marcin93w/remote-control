@@ -1,24 +1,38 @@
 <html>
 <head>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"> -->
+    <script src="https://kit.fontawesome.com/0549145fa9.js" crossorigin="anonymous"></script>    
     <title>Poligon remote control</title>
     <meta name="viewport" content="width=device-width, user-scalable=no" />
     <style>
     body {
-        background-color: black;
+        background-color: #404040;
+        color: #b8b8b8;
+        font-family: Impact;
     }
-    .radio {
+    .title {
+        text-align: center;
+        text-transform: uppercase;
+    }
+    .description {
+        margin-left: 10px;
+    }
+    .section {
+        padding: 10px;
+        margin: 10px;
+        border: thin solid #15d32b;
+        border-radius: 5px;
+    }
+    .subsection {
+        padding: 3px;
+        margin: 0;
+        margin-bottom: -1px;
+        border: thin solid #b8b8b8;
+        border-radius: 5px;
+    }
+    .grid-table {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr 1fr 1fr;
-    }
-    .TvPilot{
-        display: none;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr 1fr 1fr 1fr;
-    }
-    .ChangeButton{
-        display: grid;
     }
     .left {
         grid-column: 1;
@@ -32,7 +46,17 @@
     .btn {
         height: 120px;
         margin: 10px;
-        background-color: #15d32b;
+        border: solid 3px;
+        border-color: #15d32b;
+        background-color: green;
+        color: #b8b8b8;
+    }
+    .btn.red {
+        border-color: #ff0000;
+        background-color: #8a0000;
+    }
+    .btn:active {
+        border-color: green;
     }
     .fas{
         font-size: 3em;
@@ -47,71 +71,95 @@
     </style>
 </head> 
 <body onload="ChangePilot">
-    <div id=radio class="radio">
-        <button class="left btn"  onclick="fetch('/send?device=radio&button=vol-up')">
-            <i class="fas fa-volume-up"></i>
-        </button>
-        <button class="right btn show" onclick="fetch('/send?device=radio&button=aux')">
-            <i class="fas icon fa-music"></i><i class="fas fa-bell"></i>
-        </button>
-
-        <button class="left btn btn-primary" onclick="fetch('/send?device=radio&button=vol-down')">
-            <i class="fas fa-volume-down"></i>
-        </button>
-        <button class="right btn" onclick="fetch('/send?device=radio&button=power')">
-            </i><i class="fas icon fa-music"></i><i class="fas fa-bell-slash"></i>
-        </button>
-        <button class="btn center" onclick="fetch('/send?device=tv&button=power')">
-            <i class="fas icon fa-power-off"></i><i class="fas icon fa-tv"></i>
-        </button>
+    <span class="title"><h3>Poligon Remote Control</h3></span>
+    <div id=radio class="section">
+        <div class="title">Audio</div>
+        <div class="subsection">
+            <div class="description">Volume</div>
+            <div class="grid-table">
+                <button class="left btn" onclick="fetch('/send?device=radio&button=vol-down')">
+                    <i class="fas fa-volume-down"></i>
+                </button>
+                <button class="right btn" onclick="fetch('/send?device=radio&button=vol-up')">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+            </div>
+        </div>
+        <div class="subsection">
+            <div class="description">Source</div>
+            <div class="grid-table">
+                <button class="left btn show" 
+                    onclick="fetch('/send?device=radio&button=aux'); fetch('/audioswitch?source=2');">
+                    <i class="fas icon fa-tv"></i>
+                </button>
+                <button class="right btn show" 
+                    onclick="fetch('/send?device=radio&button=aux'); fetch('/audioswitch?source=1');">
+                    <i class="fas icon fa-guitar"></i>
+                </button>
+                <button class="left btn show" 
+                    onclick="fetch('/send?device=radio&button=aux'); fetch('/audioswitch?source=3');">
+                    <i class="fas icon fa-laptop"></i>
+                </button>
+                <button class="right btn" onclick="fetch('/send?device=radio&button=tuner')">
+                    </i><i class="fas icon fa-broadcast-tower"></i>
+                </button>
+            </div>
+        </div>
+        <div class="subsection">
+            <div class="description">Power off</div>
+            <div class="grid-table">
+                <button class="btn red center" onclick="fetch('/send?device=radio&button=power')">
+                    <i class="fas icon fa-power-off"></i>
+                </button>
+            </div>
+        </div>
     </div>
-    <div id=TvPilot class="TvPilot">
-        <button class="left btn" onclick="fetch('/send?device=tv&button=vol-up')">
-            <i class="fas fa-volume-up"></i>
-        </button>
-        <button class="right btn" onclick="fetch('/send?device=tv&button=ch-up')">
-            <i class="fas fa-sort-numeric-up"></i>
-        </button>
-        <button class="left btn" onclick="fetch('/send?device=tv&button=vol-down')">
-            <i class="fas fa-volume-down"></i>
-        </button>
-        <button class="right btn" onclick="fetch('/send?device=tv&button=ch-down')">
-            <i class="fas fa-sort-numeric-down"></i>
-        </button>
-        <button class="center btn" onclick="fetch('/send?device=tv&button=source')">
-            <i class="fab fa-usb"></i>
-        </button>
-        <button class="left btn" onclick="fetch('/send?device=tv&button=vol-up')">
-            <i class="fas fa-chevron-up"></i>
-        </button>
-        <button class="right btn" onclick="fetch('/send?device=tv&button=vol-up')">
-            <i class="fas fa-chevron-down"></i>
-        </button>
+    <div id=tv class="section">
+        <div class="title">TV</div>
+        <div class="subsection">
+            <div class="description">Power on/off</div>
+            <div class="grid-table">
+                <button class="btn center" onclick="fetch('/send?device=tv&button=power')">
+                    <i class="fas icon fa-power-off"></i>
+                </button>
+            </div>
+        </div>
+        <div class="subsection">
+            <div class="description">Channel</div>
+            <div class="grid-table">
+                <button class="left btn" onclick="fetch('/send?device=tv&button=ch-down')">
+                    <i class="fas fa-sort-numeric-down"></i>
+                </button>
+                <button class="right btn" onclick="fetch('/send?device=tv&button=ch-up')">
+                    <i class="fas fa-sort-numeric-up"></i>
+                </button>
+            </div>
+        </div>
+        <div class="subsection">
+            <div class="description">Source</div>
+            <div class="grid-table">
+                <button class="center btn" onclick="fetch('/send?device=tv&button=source')">
+                    <i class="fab fa-usb"></i>
+                </button>
+                <button class="left btn" onclick="fetch('/send?device=tv&button=down')">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <button class="right btn" onclick="fetch('/send?device=tv&button=up')">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+        </div>
+        <div class="subsection">
+            <div class="description">Volume</div>
+            <div class="grid-table">
+                <button class="left btn" onclick="fetch('/send?device=tv&button=vol-down')">
+                    <i class="fas fa-volume-down"></i>
+                </button>
+                <button class="right btn" onclick="fetch('/send?device=tv&button=vol-up')">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+            </div>
+        </div>
     </div>
-    <div id="audio">
-        <button onclick="fetch('/audioswitch?source=1')">Audio 1</button>
-        <button onclick="fetch('/audioswitch?source=2')">Audio 2</button>
-        <button onclick="fetch('/audioswitch?source=3')">Audio 3</button>
-    </div>
-    <div id=ChangeButton class="ChangeButton">
-        <button onclick="ChangePilot()" class="center btn">
-            <i class="fas icon fa-music"></i><i class="fas fa-retweet"></i></i><i class="fas icon fa-tv"></i>
-    </button>
-    </div>div>
 </body>
-<script>
-    var phase = 1
-    function ChangePilot() {
-        if (phase === 1) {
-        document.getElementById("radio").style.display= "none"
-        document.getElementById("TvPilot").style.display= "grid"
-        phase = 0
-        }
-        else{
-        document.getElementById("TvPilot").style.display= "none"
-        document.getElementById("radio").style.display= "grid"
-        phase = 1
-        }
-    }
-</script>
 </html>
