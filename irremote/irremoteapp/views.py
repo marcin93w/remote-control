@@ -29,6 +29,7 @@ def audio_switch(request):
     GPIO.output(16, source == '2')
     GPIO.output(20, source == '3')
     GPIO.output(21, source == '3')
+    return HttpResponse('ok')
 
 @csrf_exempt
 def dialogflow(request):
