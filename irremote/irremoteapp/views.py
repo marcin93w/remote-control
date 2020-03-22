@@ -4,6 +4,7 @@ from py_irsend import irsend
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
+import RPi.GPIO as GPIO
 
 def index(request):
     return render(request, 'index.html')
