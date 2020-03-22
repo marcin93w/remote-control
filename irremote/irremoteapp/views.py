@@ -4,7 +4,15 @@ from py_irsend import irsend
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
+
 import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(23, GPIO.OUT)
+GPIO.setup(24, GPIO.OUT)
+GPIO.setup(25, GPIO.OUT)
+GPIO.setup(27, GPIO.OUT)
+GPIO.setup(28, GPIO.OUT)
+GPIO.setup(29, GPIO.OUT)
 
 def index(request):
     return render(request, 'index.html')
@@ -15,12 +23,12 @@ def send(request):
 
 def audio_switch(request):
     source = request.GET['source']
-    GPIO.output(23, GPIO.LOW if source == 1 else GPIO.HIGH)
-    GPIO.output(24, GPIO.LOW if source == 1 else GPIO.HIGH)
-    GPIO.output(25, GPIO.LOW if source == 2 else GPIO.HIGH)
-    GPIO.output(27, GPIO.LOW if source == 2 else GPIO.HIGH)
-    GPIO.output(28, GPIO.LOW if source == 3 else GPIO.HIGH)
-    GPIO.output(29, GPIO.LOW if source == 3 else GPIO.HIGH)
+    GPIO.output(23, source == 1)
+    GPIO.output(24, source == 1)
+    GPIO.output(25, source == 2)
+    GPIO.output(27, source == 2)
+    GPIO.output(28, source == 3)
+    GPIO.output(29, source == 3)
 
 @csrf_exempt
 def dialogflow(request):
