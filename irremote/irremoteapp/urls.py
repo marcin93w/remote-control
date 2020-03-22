@@ -7,5 +7,6 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('send', views.send, name='send'),
+    path('audioswitch', views.audio_switch, name='audioswitch'),
     path('dialogflow', views.dialogflow, name='dialogflow'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

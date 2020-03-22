@@ -12,7 +12,7 @@ def send(request):
     irsend.send_once(request.GET['device'], [request.GET['button']])
     return HttpResponse('ok')
 
-def audioswitch(request):
+def audio_switch(request):
     source = request.GET['source']
     GPIO.output(23, GPIO.LOW if source == 1 else GPIO.HIGH)
     GPIO.output(24, GPIO.LOW if source == 1 else GPIO.HIGH)
