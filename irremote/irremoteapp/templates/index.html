@@ -1,6 +1,5 @@
 <html>
 <head>
-<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"> -->
     <script src="https://kit.fontawesome.com/0549145fa9.js" crossorigin="anonymous"></script>    
     <title>Poligon remote control</title>
     <meta name="viewport" content="width=device-width, user-scalable=no" />
@@ -10,6 +9,7 @@
         color: #b8b8b8;
         font-family: monospace;
         font-weight: bold;
+        text-align:center;
     }
     .title {
         text-align: center;
@@ -23,6 +23,10 @@
         margin: 10px;
         border: thin solid #15d32b;
         border-radius: 5px;
+        width: 300px;
+        display: inline-block;
+        vertical-align: top;
+        text-align: left;
     }
     .subsection {
         padding: 3px;
@@ -71,9 +75,9 @@
     }
     </style>
 </head> 
-<body onload="ChangePilot">
+<body>
     <span class="title"><h3>Poligon Remote Control</h3></span>
-    <div id=radio class="section">
+    <div id="radio" class="section">
         <div class="title">Audio</div>
         <div class="subsection">
             <div class="description">Volume</div>
@@ -115,7 +119,7 @@
             </div>
         </div>
     </div>
-    <div id=tv class="section">
+    <div id="tv" class="section">
         <div class="title">TV</div>
         <div class="subsection">
             <div class="description">Power on/off</div>
@@ -158,6 +162,17 @@
                 </button>
                 <button class="right btn" onclick="fetch('/send?device=tv&button=vol-up')">
                     <i class="fas fa-volume-up"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="section">
+        <div class="title">Lights</div>
+        <div class="subsection">
+            <div class="description">Balcony</div>
+            <div class="grid-table">
+                <button class="btn center" onclick='fetch("http://192.168.0.213:2137/toggleLight", { mode: "no-cors"})'>
+                    <i class="fas icon fa-power-off"></i>
                 </button>
             </div>
         </div>
