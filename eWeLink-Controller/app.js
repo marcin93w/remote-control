@@ -1,7 +1,7 @@
 const http = require('http');
 const ewelink = require('ewelink-api');
 
-const hostname = '127.0.0.1';
+const hostname = '192.168.0.213';
 const port = 2137;
 
 const eweLinkConnection = new ewelink({
