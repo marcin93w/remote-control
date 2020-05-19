@@ -1,6 +1,6 @@
 <html>
 <head>
-    <script src="https://kit.fontawesome.com/0549145fa9.js" crossorigin="anonymous"></script>    
+    <script src="https://kit.fontawesome.com/0549145fa9.js" crossorigin="anonymous"></script>
     <title>Poligon remote control</title>
     <meta name="viewport" content="width=device-width, user-scalable=no" />
     <style>
@@ -74,7 +74,7 @@
         margin-right: 5px;
     }
     </style>
-</head> 
+</head>
 <body>
     <span class="title"><h3>Poligon Remote Control</h3></span>
     <div id="radio" class="section">
@@ -93,15 +93,15 @@
         <div class="subsection">
             <div class="description">Source</div>
             <div class="grid-table">
-                <button class="left btn show" 
+                <button class="left btn show"
                     onclick="fetch('/send?device=radio&button=aux'); fetch('/audioswitch?source=2');">
                     <i class="fas icon fa-tv"></i>
                 </button>
-                <button class="right btn show" 
+                <button class="right btn show"
                     onclick="fetch('/send?device=radio&button=aux'); fetch('/audioswitch?source=1');">
                     <i class="fas icon fa-guitar"></i>
                 </button>
-                <button class="left btn show" 
+                <button class="left btn show"
                     onclick="fetch('/send?device=radio&button=aux'); fetch('/audioswitch?source=3');">
                     <i class="fas icon fa-laptop"></i>
                 </button>
@@ -171,11 +171,28 @@
         <div class="subsection">
             <div class="description">Balcony</div>
             <div class="grid-table">
-                <button class="btn center" onclick='fetch("http://192.168.0.213:2137/toggleLight", { mode: "no-cors"})'>
-                    <i class="fas icon fa-power-off"></i>
+                <button class="btn center" onclick='turnOnLights(this)'>
+                    <i id="lights-loader" style="display:none" class="fas fa-spinner fa-spin"></i>
+                    <i id="lights-icon" class="fas icon fa-power-off"></i>
                 </button>
             </div>
         </div>
     </div>
+    <script>
+        function turnOnLights(button) {
+            const loaderStyle = document.getElementById('lights-loader').style
+            const iconStyle = document.getElementById('lights-icon').style
+            loaderStyle.display = 'block'
+            iconStyle.display = 'none'
+            button.disabled = true
+
+            fetch("http://192.168.0.213:2137/toggleLight", { mode: "no-cors"})
+                .finally(() => {
+                    loaderStyle.display = 'none'
+                    iconStyle.display = 'block'
+                    button.disabled = false
+                })
+        }
+    </script>
 </body>
 </html>
