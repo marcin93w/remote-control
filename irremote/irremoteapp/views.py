@@ -38,10 +38,10 @@ def audio_switch(request):
     return HttpResponse('ok')
 
 def leds(request):
-    id = request.GET['id']
-    red = request.GET['r']
-    green = request.GET['g']
-    blue = request.GET['b']
+    id = int(request.GET['id'])
+    red = int(request.GET['r'])
+    green = int(request.GET['g'])
+    blue = int(request.GET['b'])
     pixels[id] = (red,green,blue)
     return HttpResponse('ok')
 
