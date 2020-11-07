@@ -6,6 +6,10 @@ from django.http import JsonResponse
 import json
 
 import RPi.GPIO as GPIO
+
+import board
+import neopixel
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(13, GPIO.OUT)
 GPIO.setup(19, GPIO.OUT)
@@ -13,6 +17,8 @@ GPIO.setup(26, GPIO.OUT)
 GPIO.setup(16, GPIO.OUT)
 GPIO.setup(20, GPIO.OUT)
 GPIO.setup(21, GPIO.OUT)
+
+pixels = neopixel.NeoPixel(board.D18, 30)
 
 def index(request):
     return render(request, 'index.html')
@@ -29,6 +35,14 @@ def audio_switch(request):
     GPIO.output(16, source != '2')
     GPIO.output(20, source != '3')
     GPIO.output(21, source != '3')
+    return HttpResponse('ok')
+
+def leds(request):
+    id = request.GET['id']
+    red = request.GET['r']
+    green = request.GET['g']
+    blue = request.GET['b']
+    pixels[id] = (red,green,blue)
     return HttpResponse('ok')
 
 @csrf_exempt
