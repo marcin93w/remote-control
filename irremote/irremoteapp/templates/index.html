@@ -177,6 +177,17 @@
                 </button>
             </div>
         </div>
+        <div class="subsection">
+            <div class="description">Leds</div>
+            <div class="grid-table">
+                <input type="color" id="ledcolor" name="ledcolor" value="#000000">
+                <input type="number" id="number" name="number" />
+                <button class="btn center" onclick='turnOnLeds(this)'>
+                    <i id="lights-icon" class="fas icon fa-power-off"></i>
+                </button>
+            </div>
+            
+        </div>
     </div>
     <script>
         function turnOnLights(button) {
@@ -192,6 +203,18 @@
                     iconStyle.display = 'block'
                     button.disabled = false
                 })
+        }
+
+        function turnOnLeds(button) {
+            const color = document.getElementById('ledcolor').value
+            const number = document.getElementById('number').value
+
+            const r = parseInt(color.substr(1,2), 16)
+            const g = parseInt(color.substr(3,2), 16)
+            const b = parseInt(color.substr(5,2), 16)
+
+            for (let i=0; i<number && i <30; i++)
+                fetch(`led?id=${i}&r=${r}&g=${g}&b=${b}`)
         }
     </script>
 </body>
