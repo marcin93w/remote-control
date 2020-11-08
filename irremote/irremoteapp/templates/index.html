@@ -182,6 +182,17 @@
             <div class="grid-table">
                 <input type="color" id="ledcolor" name="ledcolor" value="#000000">
                 <input type="number" id="number" name="number" />
+                <button class="btn center" onclick='turnOnLed1(this)'>
+                    <i id="lights-icon" class="fas icon fa-power-off"></i>
+                </button>
+            </div>
+            
+        </div>
+        <div class="subsection">
+            <div class="description">Puynne ledy</div>
+            <div class="grid-table">
+                <input type="color" id="ledcolor1" name="ledcolor1" value="#000000">
+                <input type="color" id="ledcolor2" name="ledcolor2" value="#FFFFFF">
                 <button class="btn center" onclick='turnOnLeds(this)'>
                     <i id="lights-icon" class="fas icon fa-power-off"></i>
                 </button>
@@ -190,7 +201,7 @@
         </div>
     </div>
     <script>
-        function turnOnLights(button) {
+         function turnOnLampkli(button) {
             const loaderStyle = document.getElementById('lights-loader').style
             const iconStyle = document.getElementById('lights-icon').style
             loaderStyle.display = 'block'
@@ -206,16 +217,34 @@
         }
 
         function turnOnLeds(button) {
-            const color = document.getElementById('ledcolor').value
-            const number = document.getElementById('number').value
+            const color1 = document.getElementById('ledcolor1').value
+            const color2 = document.getElementById('ledcolor2').value
 
-            const r = parseInt(color.substr(1,2), 16)
-            const g = parseInt(color.substr(3,2), 16)
-            const b = parseInt(color.substr(5,2), 16)
+            let r1 = parseInt(color1.substr(1,2), 16)
+            let r2 = parseInt(color2.substr(1,2), 16)
+            let g1 = parseInt(color1.substr(3,2), 16)
+            let g2 = parseInt(color2.substr(3,2), 16)
+            let b1 = parseInt(color1.substr(5,2), 16)
+            let b2 = parseInt(color2.substr(5,2), 16)
+            let r = r1
+            let g = g1
+            let b = b1
+            let chr = (r1 - r2) / 120
+            let chg = (g1 - g2) / 120
+            let chb = (b1 - b2) / 120
+            for (let i = 120 ; i > 0; i--)
+            {
+                r = Math.round (r-chr)
+                g = Math.round (g-chg)
+                b = Math.round (b-chb)
 
-            for (let i=0; i<number && i <30; i++)
-                fetch(`led?id=${i}&r=${r}&g=${g}&b=${b}`)
-        }
+console.log(`r: ${r1} g: ${g1} b: ${b1}`)
+
+console.log(`r: ${r} g: ${g} b: ${b}`)
+
+        }}
+            
+       
     </script>
 </body>
 </html>
