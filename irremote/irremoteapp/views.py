@@ -18,7 +18,7 @@ GPIO.setup(16, GPIO.OUT)
 GPIO.setup(20, GPIO.OUT)
 GPIO.setup(21, GPIO.OUT)
 
-pixels = neopixel.NeoPixel(board.D18, 30)
+pixels = neopixel.NeoPixel(board.D18, 120)
 
 def index(request):
     return render(request, 'index.html')
@@ -37,13 +37,27 @@ def audio_switch(request):
     GPIO.output(21, source != '3')
     return HttpResponse('ok')
 
-def leds(request):
+def hexToRgb(hex):
+    h = hex.lstrip('#')
+    return tuple(int(h[i:i+2], 16) for i in (0, 2, 4))
+
+def led(request):
     id = int(request.GET['id'])
-    red = int(request.GET['r'])
-    green = int(request.GET['g'])
-    blue = int(request.GET['b'])
-    pixels[id] = (red,green,blue)
+    pixels[id] = hexToRgb(request.GET['color'])
     return HttpResponse('ok')
+
+@csrf_exempt
+def leds(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode("utf-8"))
+        for i, p in enumerate(data):
+            pixels[i] = hexToRgb(p)
+        return HttpResponse('ok')
+    else: #GET
+        current_state = []
+        for p in pixels:
+            current_state.append('#%02x%02x%02x' % (p[0], p[1], p[2]))
+        return JsonResponse(current_state, safe=False)
 
 @csrf_exempt
 def dialogflow(request):
