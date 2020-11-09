@@ -206,19 +206,20 @@
             </div>
         </div>
         <div class="subsection">
-            <div class="description">Puynne ledy</div>
+            <div class="description">Gradient</div>
             <div class="grid-table">
-                <input type="color" id="ledcolor1" name="ledcolor1" value="#000000">
-                <input type="color" id="ledcolor2" name="ledcolor2" value="#FFFFFF">
-                <button class="btn center" onclick='turnOnLedsAlt(this)'>
-                    <i id="lights-icon" class="fas icon fa-power-off"></i>
-                </button>
+                <div class="btn">
+                    <input type="color" id="ledcolor1" name="ledcolor1" value="#000000" onchange='turnOnLedsGradient(this)'>
+                </div>
+                <div class="btn">
+                    <input type="color" id="ledcolor2" name="ledcolor2" value="#FFFFFF" onchange='turnOnLedsGradient(this)'>
+                </div>
             </div>
 
         </div>
     </div>
     <script>
-         function turnOnLights(button) {
+        function turnOnLights(button) {
             const loaderStyle = document.getElementById('lights-loader').style
             const iconStyle = document.getElementById('lights-icon').style
             loaderStyle.display = 'block'
@@ -244,7 +245,9 @@
             })
         }
 
-        function turnOnLedsAlt(button) {
+        function turnOnLedsGradient(button) {
+            let leds = []
+
             const color1 = document.getElementById('ledcolor1').value
             const color2 = document.getElementById('ledcolor2').value
 
@@ -269,9 +272,17 @@
                 console.log(`r: ${r1} g: ${g1} b: ${b1}`)
                 console.log(`r: ${r} g: ${g} b: ${b}`)
 
-        }}
+                leds.push([r, g, b])
+            }
 
-
+            fetch('leds', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(leds),
+            })
+        }
     </script>
 </body>
 </html>
