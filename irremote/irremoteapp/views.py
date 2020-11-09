@@ -51,7 +51,10 @@ def leds(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode("utf-8"))
         for i, p in enumerate(data):
-            pixels[i] = hexToRgb(p)
+            if isinstance(p, list):
+                pixels[i] = p
+            else:
+                pixels[i] = hexToRgb(p)
         return HttpResponse('ok')
     else: #GET
         current_state = []
@@ -64,7 +67,7 @@ def dialogflow(request):
     if request.body:
         data = json.loads(request.body.decode("utf-8"))
         if 'queryResult' in data:
-            intent = data['queryResult']['intent']['displayName'] 
+            intent = data['queryResult']['intent']['displayName']
             if intent == 'radio-on':
                 irsend.send_once('radio', ['aux'])
             elif intent == 'radio-off':
@@ -79,7 +82,7 @@ def dialogflow(request):
             return JsonResponse({
                 "fulfillment_text": "ok"
             })
-    
+
     return JsonResponse({
         "fulfillment_text": "unknown command"
     })
