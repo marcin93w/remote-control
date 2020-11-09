@@ -15,7 +15,9 @@ const server = http.createServer(async (req, res) => {
     res.setHeader('Content-Type', 'text/plain');
 
     if (req.url === '/toggleLight') {
-        await eweLinkConnection.toggleDevice('10005f2197');
+        let status = await eweLinkConnection.toggleDevice('10005f2197');
+
+        console.log(JSON.stringify(status))
         res.end('OK');
     }
 
