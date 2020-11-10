@@ -99,8 +99,55 @@
         margin-left: 100px;
     }
     </style>
+    <style>
+        /* HTML toggle switch from https://www.w3schools.com/howto/howto_css_switch.asp */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 102px;
+            height: 34px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #404040;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 42px;
+            left: 4px;
+            bottom: 4px;
+            background-color: #b8b8b8;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+        input:checked + .slider {
+            background-color: green;
+        }
+        input:focus + .slider {
+            box-shadow: 0 0 1px green;
+        }
+        input:checked + .slider:before {
+            -webkit-transform: translateX(52px);
+            -ms-transform: translateX(52px);
+            transform: translateX(52px);
+        }
+    </style>
 </head>
-<body>
+<body onload="init()">
     <span class="title"><h3>Poligon Remote Control</h3></span>
     <div id="radio" class="section">
         <div class="title">Audio</div>
@@ -192,6 +239,38 @@
         </div>
     </div>
     <div class="section">
+        <div class="title">Leds</div>
+        <div class="subsection">
+            <div class="description">Color</div>
+            <div class="grid-table">
+                <div class="btn center">
+                    <input type="color" id="ledcolor" value="#000000" onchange='turnOnLeds(this)' />
+                    <i id="lights-icon" class="fas icon fa-palette color-picker-icon" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+        <div class="subsection">
+            <div class="description">Gradient</div>
+            <div class="grid-table">
+                <div class="btn">
+                    <input type="color" id="ledcolor2" name="ledcolor2" value="#000000" onchange='turnOnLedsGradient(this)'>
+                    <i id="lights-icon" class="fas icon fa-palette color-picker-icon" aria-hidden="true"></i>
+                </div>
+                <div class="btn">
+                    <input type="color" id="ledcolor1" name="ledcolor1" value="#FFFFFF" onchange='turnOnLedsGradient(this)'>
+                    <i id="lights-icon" class="fas icon fa-palette color-picker-icon" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="subsection">
+                <div class="description">Safe mode</div>
+                <label class="switch btn">
+                    <input type="checkbox" id="safeMode" checked />
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="section">
         <div class="title">Balcony Lights</div>
         <div class="subsection">
             <div class="description">Power on/off</div>
@@ -203,33 +282,21 @@
             </div>
         </div>
     </div>
-    <div class="section">
-        <div class="title">Leds</div>
-        <div class="subsection">
-            <div class="description">Color</div>
-            <div class="grid-table">
-                <div class="btn center">
-                    <input type="color" value="#000000" onchange='turnOnLeds(this)' />
-                    <i id="lights-icon" class="fas icon fa-palette color-picker-icon" aria-hidden="true"></i>
-                </div>
-            </div>
-        </div>
-        <div class="subsection">
-            <div class="description">Gradient</div>
-            <div class="grid-table">
-                <div class="btn">
-                    <input type="color" id="ledcolor1" name="ledcolor1" value="#000000" onchange='turnOnLedsGradient(this)'>
-                    <i id="lights-icon" class="fas icon fa-palette color-picker-icon" aria-hidden="true"></i>
-                </div>
-                <div class="btn">
-                    <input type="color" id="ledcolor2" name="ledcolor2" value="#FFFFFF" onchange='turnOnLedsGradient(this)'>
-                    <i id="lights-icon" class="fas icon fa-palette color-picker-icon" aria-hidden="true"></i>
-                </div>
-            </div>
-
-        </div>
-    </div>
     <script>
+        function init() {
+            const colorSingle = document.getElementById('ledcolor')
+            const color1 = document.getElementById('ledcolor1')
+            const color2 = document.getElementById('ledcolor2')
+
+            fetch('leds')
+                .then(res => res.json())
+                .then(colors => {
+                    colorSingle.value = colors[0]
+                    color1.value = colors[0]
+                    color2.value = colors[colors.length - 2]
+                })
+        }
+
         function turnOnLights(button) {
             const loaderStyle = document.getElementById('lights-loader').style
             const iconStyle = document.getElementById('lights-icon').style
@@ -245,9 +312,13 @@
                 })
         }
 
+        function isSafeMode() {
+            return document.getElementById('safeMode').checked
+        }
+
         function turnOnLeds(input) {
             const color = input.value
-            fetch('leds', {
+            fetch(`leds?safeMode=${isSafeMode()}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -286,7 +357,7 @@
                 leds.push([r, g, b])
             }
 
-            fetch('leds', {
+            fetch(`leds?safeMode=${isSafeMode()}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

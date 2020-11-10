@@ -51,6 +51,13 @@ def leds(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode("utf-8"))
         for i, p in enumerate(data):
+            if i == 59: # don't light up the one in the middle
+                continue
+            
+            if request.GET['safeMode'] == 'true' and i % 2:
+                pixels[i] = (0,0,0)
+                continue
+
             if isinstance(p, list):
                 pixels[i] = p
             else:
