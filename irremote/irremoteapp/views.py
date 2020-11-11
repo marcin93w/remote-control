@@ -4,11 +4,17 @@ from py_irsend import irsend
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
+import logging
 
 import RPi.GPIO as GPIO
 
 import board
 import neopixel
+
+import pygame
+import pygame.camera
+
+logger = logging.getLogger(__name__)
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(13, GPIO.OUT)
@@ -19,6 +25,9 @@ GPIO.setup(20, GPIO.OUT)
 GPIO.setup(21, GPIO.OUT)
 
 pixels = neopixel.NeoPixel(board.D18, 120)
+
+pygame.init()
+pygame.camera.init()
 
 def index(request):
     return render(request, 'index.html')
@@ -68,6 +77,19 @@ def leds(request):
         for p in pixels:
             current_state.append('#%02x%02x%02x' % (p[0], p[1], p[2]))
         return JsonResponse(current_state, safe=False)
+
+def ambilight_snapshot(request):
+    cam = pygame.camera.Camera("/dev/video0", (1920,1080))
+    cam.start()
+
+    image = cam.get_image()
+    array = pygame.PixelArray(image)
+
+    cam.stop()
+
+    # logger.info(array)
+
+    return JsonResponse([array[100, 100], array[300, 300], array[500, 500], array[800, 800], array[1000, 1000]], safe=False)
 
 @csrf_exempt
 def dialogflow(request):
