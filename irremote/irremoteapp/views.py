@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
 import logging
+import requests
 
 import RPi.GPIO as GPIO
 
@@ -71,6 +72,29 @@ def leds(request):
         for p in pixels:
             current_state.append('#%02x%02x%02x' % (p[0], p[1], p[2]))
         return JsonResponse(current_state, safe=False)
+
+@csrf_exempt
+def ambilight(request):
+    if request.method == 'POST':
+        enable = request.GET['enable'] == 'true'
+        post_data = {
+            "command": "componentstate",
+            "componentstate": {
+            "component": "LEDDEVICE",
+                "state": enable
+            }
+        }
+        response = requests.post('http://192.168.0.213:8090/json-rpc/', data=json.dumps(post_data), headers={'Content-type': 'application/json'})
+
+        return JsonResponse(response.json())
+    else: #GET
+        post_data = {
+            "command":"serverinfo",
+            "tan":1
+        }
+        response = requests.post('http://192.168.0.213:8090/json-rpc/', data=json.dumps(post_data), headers={'Content-type': 'application/json'})
+
+        return JsonResponse(response.json()['info']['components'], safe=False)
 
 @csrf_exempt
 def dialogflow(request):

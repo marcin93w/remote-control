@@ -241,32 +241,41 @@
     <div class="section">
         <div class="title">Leds</div>
         <div class="subsection">
-            <div class="description">Color</div>
-            <div class="grid-table">
-                <div class="btn center">
-                    <input type="color" id="ledcolor" value="#000000" onchange='turnOnLeds(this)' />
-                    <i id="lights-icon" class="fas icon fa-palette color-picker-icon" aria-hidden="true"></i>
-                </div>
-            </div>
+            <div class="description">Ambilight</div>
+            <label class="switch btn">
+                <input type="checkbox" id="ambilight" onchange="toggleAmbilight(this)" />
+                <span class="slider"></span>
+            </label>
         </div>
-        <div class="subsection">
-            <div class="description">Gradient</div>
-            <div class="grid-table">
-                <div class="btn">
-                    <input type="color" id="ledcolor2" name="ledcolor2" value="#000000" onchange='turnOnLedsGradient(this)'>
-                    <i id="lights-icon" class="fas icon fa-palette color-picker-icon" aria-hidden="true"></i>
-                </div>
-                <div class="btn">
-                    <input type="color" id="ledcolor1" name="ledcolor1" value="#FFFFFF" onchange='turnOnLedsGradient(this)'>
-                    <i id="lights-icon" class="fas icon fa-palette color-picker-icon" aria-hidden="true"></i>
+        <div id="manual-led-controls">
+            <div class="subsection">
+                <div class="description">Color</div>
+                <div class="grid-table">
+                    <div class="btn center">
+                        <input type="color" id="ledcolor" value="#000000" onchange='turnOnLeds(this)' />
+                        <i id="lights-icon" class="fas icon fa-palette color-picker-icon" aria-hidden="true"></i>
+                    </div>
                 </div>
             </div>
             <div class="subsection">
-                <div class="description">Safe mode</div>
-                <label class="switch btn">
-                    <input type="checkbox" id="safeMode" checked />
-                    <span class="slider"></span>
-                </label>
+                <div class="description">Gradient</div>
+                <div class="grid-table">
+                    <div class="btn">
+                        <input type="color" id="ledcolor2" name="ledcolor2" value="#000000" onchange='turnOnLedsGradient(this)'>
+                        <i id="lights-icon" class="fas icon fa-palette color-picker-icon" aria-hidden="true"></i>
+                    </div>
+                    <div class="btn">
+                        <input type="color" id="ledcolor1" name="ledcolor1" value="#FFFFFF" onchange='turnOnLedsGradient(this)'>
+                        <i id="lights-icon" class="fas icon fa-palette color-picker-icon" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="subsection">
+                    <div class="description">Safe mode</div>
+                    <label class="switch btn">
+                        <input type="checkbox" id="safeMode" checked />
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
         </div>
     </div>
@@ -284,6 +293,25 @@
     </div>
     <script>
         function init() {
+            initAmbilight()
+            initLedsControls()
+        }
+
+        function initAmbilight() {
+            fetch('ambilight')
+                .then(res => res.json())
+                .then(components => {
+                    let isEnabled = components
+                        .filter(c => c.name === 'ALL' || c.name === 'LEDDEVICE')
+                        .every (c => c.enabled)
+
+                    let checkbox = document.getElementById('ambilight')
+                    checkbox.checked = isEnabled
+                    ledManualControlsVisibility(isEnabled)
+                })
+        }
+
+        function initLedsControls() {
             const colorSingle = document.getElementById('ledcolor')
             const color1 = document.getElementById('ledcolor1')
             const color2 = document.getElementById('ledcolor2')
@@ -364,6 +392,27 @@
                 },
                 body: JSON.stringify(leds),
             })
+        }
+
+        function toggleAmbilight(input) {
+
+            fetch(`ambilight?enable=${input.checked}`, {method: 'POST'})
+                .then(res => res.json())
+                .then(status => {
+                    if (status.success) {
+                        ledManualControlsVisibility(input.checked)
+                    }
+                })
+        }
+
+        function ledManualControlsVisibility(hide) {
+            const ledControlsStyle = document.getElementById('manual-led-controls').style
+
+            if (hide) {
+                ledControlsStyle.display = 'none'
+            } else {
+                ledControlsStyle.display = 'block'
+            }
         }
     </script>
 </body>

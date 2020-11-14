@@ -10,5 +10,6 @@ urlpatterns = [
     path('audioswitch', views.audio_switch, name='audioswitch'),
     path('led', views.led, name='led'),
     path('leds', views.leds, name='leds'),
+    path('ambilight', views.ambilight, name='ambilight'),
     path('dialogflow', views.dialogflow, name='dialogflow'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
